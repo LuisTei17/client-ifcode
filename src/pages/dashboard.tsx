@@ -66,8 +66,40 @@ const Dashboard = () => {
       });
   }, [isAuthenticated, userId]);
 
+  const handleAgendar = async () => {
+    if (!userId || !nextUser) return alert('Usuário ou próximo usuário não disponível');
+    const interesseId = Array.isArray(nextUser.usuarioInteresses) && nextUser.usuarioInteresses.length > 0
+      ? ((nextUser.usuarioInteresses[0] as any).interest && (nextUser.usuarioInteresses[0] as any).interest.id_interesse) || 0
+      : 0;
+    const payload = {
+      id_idoso: userId,
+      id_voluntario: nextUser.id,
+      id_interesse: interesseId,
+      datahora_inicio: new Date().toISOString(),
+      datahora_fim: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+      status: 'reserva'
+    };
+    try {
+      const res = await fetch(`${API_URL}/visitas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        alert('Visita criada com status reserva');
+      } else {
+        const err = await res.json();
+        alert('Erro ao criar visita: ' + (err.message || res.statusText));
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Erro ao criar visita');
+    }
+  };
+
   return (
-  <AuthGuard isAuthenticated={isAuthenticated ?? false}>
+  <AuthGuard>
       <div>
               <p><strong>Interesses:</strong> {nextUser && nextUser.usuarioInteresses?.map(ui => ui.interest.descricao).join(', ')}</p>
         <p>Welcome to your dashboard!</p>

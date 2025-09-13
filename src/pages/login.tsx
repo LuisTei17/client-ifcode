@@ -13,13 +13,12 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        console.log('API_URL:', API_URL);
-    const res = await fetch('http://localhost:4000/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  credentials: 'include',
-  body: JSON.stringify({ email, password })
-});
+    const res = await fetch(API_URL + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+    });
 
         if (res.ok) {
             const data = await res.json();
@@ -31,7 +30,6 @@ const Login = () => {
             setError(errorData.message || 'Login failed');
         }
     };
-rm -rf ./b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW/.git
     return (
         <div className="container">
             <h1>Login</h1>
