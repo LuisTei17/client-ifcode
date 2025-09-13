@@ -66,20 +66,13 @@ const Register = () => {
     // Buscar lista de interesses do backend ao carregar a página
     useEffect(() => {
         const fetchInteresses = async () => {
-            try {
+
                 const res = await fetch(`${API_URL}/interesses`);
                 if (res.ok) {
                     let data = await res.json();
-                    // Se vier array de string, transforma em array de objetos com id temporário
-                    if (Array.isArray(data) && typeof data[0] === 'string') {
-                        data = data.map((descricao, idx) => ({ id: idx + 1, descricao }));
-                    }
-                    console.log('listaInteresses do backend:', data);
                     setListaInteresses(data);
                 }
-            } catch (err) {
-                // Silenciar erro
-            }
+
         };
         fetchInteresses();
     }, []);
@@ -115,12 +108,9 @@ const Register = () => {
         }
 
         try {
-            // Debug: veja o que está sendo enviado
-            console.log('interesses selecionados:', interesses);
             const interessesIds = Array.isArray(interesses)
                 ? interesses.map(id => Number(id)).filter(id => !isNaN(id) && id > 0)
                 : [];
-            console.log('interesses enviados:', interessesIds);
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
