@@ -3,17 +3,19 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Card from '../components/Card';
 import Navbar from '../components/Navbar';
+import Pagination from '../components/Pagination';
+import Footer from '../components/Footer';
 
 
-const Home = () => {
+const Index = () => {
     return (
+
+        <><Navbar></Navbar>
         <div className="container">
             <Head>
                 <title>Care!</title>
                 <meta name="description" content="Encontre Um Novo Amigo." />
             </Head>
-
-            <Navbar></Navbar>
 
             <main>
                 <div className="caixa-texto">
@@ -37,8 +39,13 @@ const Home = () => {
                     <Card/>
                 </div>
             </main>
+
+            
+            <Pagination></Pagination>
         </div>
+        <Footer></Footer>
+        </>
     );
 };
 
-export default Home;
+export default Index;

@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import PasswordStrength from '../components/PasswordStrength';
 import Navbar from '../components/Navbar';
+import pagination from '../components/Pagination';
 import Image from 'next/image';
+import Pagination from '../components/Pagination';
 
 
 
@@ -218,6 +220,8 @@ const Profile = () => {
           </div>
         </div>
       </main>
+
+      <Pagination></Pagination>
     </div>
   );
 };
