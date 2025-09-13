@@ -1,57 +1,36 @@
-// import Link from 'next/link';
-// import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 
-// const Navbar = () => {
-//     const [isAuthenticated, setIsAuthenticated] = useState(false);
+const Navbar = () => {
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-//     useEffect(() => {
-//         const token = localStorage.getItem('token');
-//         if (token) {
-//             setIsAuthenticated(true);
-//         }
-//     }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         setIsAuthenticated(true);
+    //     }
+    // }, []);
 
-//     const handleLogout = () => {
-//         localStorage.removeItem('token');
-//         setIsAuthenticated(false);
-//     };
+    // const handleLogout = () => {
+    //     localStorage.removeItem('token');
+    //     setIsAuthenticated(false);
+    // };
 
-//     return (
-//         // <nav>
-//         //     <div className="navbar">
-//         //         <div className="logo">
-//         //         {/* logo */}
-//         //         <p><strong>CaringFOR</strong></p>
-//         //         </div>
-            
+    return (
+            <header className="header">
+      <div className="header-content">
+        <div className="logo">
+          <Image src="/icons/heart.png" alt="Logo" width={40} height={40} />
+        </div>
+        <div className="text">
+          <h1>ConnectCare</h1>
+          <p>Connecting hearts, enriching lives</p>
+        </div>
+      </div>
+    </header>
+    );
+};
 
-//         //     <div className="links">
-//         //     <ul>
-//         //         <li>
-//         //             <Link href="/">Home</Link>
-//         //         </li>
-//         //         <li>
-//         //             <Link href="/login">Login</Link>
-//         //         </li>
-//         //         <li>
-//         //             <Link href="/register">Register</Link>
-//         //         </li>
-//         //         {isAuthenticated && (
-//         //             <>
-//         //                 <li>
-//         //                     <Link href="/dashboard">Dashboard</Link>
-//         //                 </li>
-//         //                 <li>
-//         //                     <button onClick={handleLogout}>Logout</button>
-//         //                 </li>
-//         //             </>
-//         //         )}
-//         //     </ul>
-//         //     </div>
-//         //     </div>
-//         // </nav>
-//     );
-// };
-
-// export default Navbar;
+export default Navbar;
