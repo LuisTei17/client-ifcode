@@ -44,7 +44,13 @@ const Login = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        className={email && !/^\S+@\S+\.\S+$/.test(email) ? 'error' : ''}
                     />
+                    {email && !/^\S+@\S+\.\S+$/.test(email) && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            Por favor, insira um e-mail válido.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="password">Password:</label>
