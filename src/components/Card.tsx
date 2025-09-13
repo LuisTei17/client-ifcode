@@ -6,7 +6,7 @@ const Card = () => {
     <div className="card">
       <div className="card-header">
         <div className="avatar">
-          <Image src="/icons/user.png" alt="Avatar" width={60} height={60} />
+          <Image src="../public/icons/user.png" alt="Avatar" width={60} height={60} />
         </div>
         <span className="featured">♡ Featured</span>
       </div>

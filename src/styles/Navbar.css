@@ -9,12 +9,79 @@
 .header-content {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* separa brand e nav-links */
   max-width: 1200px;
   margin: 0 auto;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espaço entre logo e texto */
+}
+
+.text h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item {
+  display: flex;           /* coloca ícone e texto na mesma linha */
+  align-items: center;     /* centraliza verticalmente */
+  gap: 8px;                /* espaço entre texto e ícone */
+  text-decoration: none;
+  font-weight: 500;
+  color: #111;
+  transition: color 0.3s ease;
+  font-size: 20px;
+}
+
+.nav-item span{
+  font-size: 20px;
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.nav-item span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;           /* um pouco abaixo do texto */
+  width: 0%;
+  height: 2px;
+  background-color: #f2c94c; /* amarelo */
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover span {
+  color: #f2c94c;          /* muda a cor do texto */
+}
+
+.nav-item:hover span::after {
+  width: 100%;            /* animação da linha */
+}
+
+.icon {
+  display: block;
+}
+
 .logo {
   margin-right: 15px;
+  
 }
 
 .text h1 {

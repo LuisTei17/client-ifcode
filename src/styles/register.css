@@ -1,0 +1,115 @@
+/* Container geral */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form div {
+    margin-bottom: 30px; /* dá espaço fixo pro erro */
+    position: relative;
+}
+
+form div span {
+    position: absolute;
+    z-index: 100;
+    bottom: -18px; /* aparece abaixo do input sem empurrar nada */
+    left: 0;
+    font-size: 0.85rem;
+    color: #e74c3c;
+}
+
+
+/* Labels */
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;   
+}
+
+/* Inputs e select */
+input, select {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Botões */
+button {
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+button[type="button"] {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+button[type="button"]:hover {
+    background-color: #d5d5d5;
+}
+
+/* Mensagens de erro */
+.error {
+    border-color: #e74c3c !important;
+}
+
+span {
+    display: block;
+    
+    color: #e74c3c;
+    font-size: 0.85rem;
+}
+
+/* Responsividade */
+@media (max-width: 550px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

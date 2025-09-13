@@ -2,6 +2,9 @@ import { useState } from 'react';
 import PasswordStrength from '../components/PasswordStrength';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar';
+import Image from 'next/image';
+
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -130,8 +133,12 @@ const Register = () => {
     const nomeValido = /^[A-Za-zÀ-ÿ\s]+$/.test(nome);
 
     return (
+
+        <div>
+            <Navbar></Navbar>
+        
         <div className="container">
-            <h1>Register</h1>
+            <h1>Cadastre-se</h1>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleRegister}>
                 <div>
@@ -303,12 +310,13 @@ const Register = () => {
                 <button type="submit">Registrar</button>
                 <button
                     type="button"
-                    style={{ marginLeft: '10px' }}
+                    
                     onClick={() => router.push('/login')}
                 >
                     Já sou cadastrado
                 </button>
             </form>
+        </div>
         </div>
     );
 };
