@@ -19,17 +19,41 @@ const Navbar = () => {
     // };
 
     return (
-            <header className="header">
-      <div className="header-content">
-        <div className="logo">
-          <Image src="/icons/heart.png" alt="Logo" width={40} height={40} />
-        </div>
-        <div className="text">
-          <h1>ConnectCare</h1>
-          <p>Connecting hearts, enriching lives</p>
-        </div>
-      </div>
-    </header>
+        <header className="header">
+            <div className="header-content">
+
+                {/* Esquerda: Logo + Texto */}
+                <div className="brand">
+                    <div className="logo">
+                        <Link href="/">
+                            <Image
+                                className="img-logo"
+                                src="/icons/Logo.svg"
+                                alt="Logo"
+                                width={60}
+                                height={60}
+                            />
+                        </Link>
+                    </div>
+                    <div className="text">
+                        <h1>ConnectCare</h1>
+                        <p>Conectando Corações E Enriquecendo Vidas</p>
+                    </div>
+                </div>
+
+                {/* Direita: Links */}
+                <nav className="nav-links">
+                    <Link href="/login" className="nav-item">
+                        <span>Login</span>
+                        <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} />
+                    </Link>
+                    <Link href="/perfil" className="nav-item">
+                        <span>Perfil</span>
+                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} />
+                    </Link>
+                </nav>
+            </div>
+        </header>
     );
 };
 
