@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import PasswordStrength from '../components/PasswordStrength';
-import Navbar from '../components/Navbar';
+import Nav from '../components/Nav';
 import pagination from '../components/Pagination';
 import Image from 'next/image';
 import Pagination from '../components/Pagination';
@@ -117,9 +117,14 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      <Navbar />
+
+        
+      <Nav />
       <main className="profile-container">
         <div className="edit-button">
+                <h1>Meu Perfil</h1>
+              <button type='submit'>Editar Perfil</button>
+        </div>
           <h1>Meu Perfil</h1>
           {editMode ? (
             <button type="button" onClick={handleSave}>Salvar</button>
@@ -153,6 +158,9 @@ const Profile = () => {
                 height={80}
               />
             </div>
+            <h2>Usuário</h2>
+            {/*<p className='user-email'>mauricioscheffersilveira13@gmail.com</p>*/}
+            
             <h2>{form?.nome || 'Usuário'}</h2>
             <p>{form?.email}</p>
             <button className="sign-out">Sign Out</button>

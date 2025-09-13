@@ -4,30 +4,31 @@ import Image from "next/image";
 const Card = () => {
   return (
     <div className="card">
-      <div className="card-header">
+      <div className="contCard">
         <div className="avatar">
-          <Image src="/icons/user.png" alt="Avatar" width={60} height={60} />
-        </div>
-        <span className="featured">♡ Featured</span>
+          <Image className="img" src="/icons/mall.jpeg" alt="" width={60} height={60} />
+        
       </div>
 
-      <div className="card-tag">Medical Support</div>
+      <div className="card-tag">Suporte ao médico</div>
 
-      <h3 className="card-title">Medical Appointment Transport</h3>
+      <h3 className="card-title">Transporte ao Médico</h3>
       <p className="card-description">
-        Need a ride to your doctor's appointment? I provide safe, reliable transportation to medical
+        Precisa dirigir para a consulta com o médico? Eu ajudo, um bom transporte para suas consultas
         appointments.
       </p>
 
       <div className="card-info">
-        <p><strong>Linda Martinez</strong> (52)</p>
-        <p>City-wide</p>
-        <p>Monday-Friday 8AM-4PM</p>
+        <p><strong>Linda Silveira</strong> (52)</p>
+        <p>Esteio</p>
+        <p>Segunda-Sexta 8:00 às 16:00</p>
       </div>
 
       <button className="card-btn">
-        <Image src="/icons/phone.png" alt="Phone" width={16} height={16} /> Get in Touch
+        <Image src="/icons/phone.png" alt="" width={16} height={16} /> Entrar em Contato
+
       </button>
+      </div>
     </div>
   );
 };

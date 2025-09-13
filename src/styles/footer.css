@@ -211,9 +211,6 @@ footer {
             color: var(--color-light);
         } 
 
-        .bottom-footer {
-            margin: 20px 60px;
-        }
 
         hr {
             border: 1px solid var(--color-light);
