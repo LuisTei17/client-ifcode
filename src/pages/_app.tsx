@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/index.css';
 import '../styles/Navbar.css';
 import '../styles/register.css';

@@ -1,3 +1,9 @@
+/* Mensagem de erro para textos */
+.error {
+    color: #e74c3c;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
 input.error {
     border: 2px solid #e74c3c;
     background-color: #fdecea;

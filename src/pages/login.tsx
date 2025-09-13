@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import SocialLogin from '../components/SocialLogin';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Login = () => {
@@ -71,8 +72,7 @@ const Login = () => {
                     Fazer cadastro
                 </button>
             </form>
-            <p>Or login with:</p>
-            {/* Include your SocialLogin component here */}
+            <SocialLogin />
         </div>
     );
 };

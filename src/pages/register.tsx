@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PasswordStrength from '../components/PasswordStrength';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/router';
@@ -60,7 +60,22 @@ const Register = () => {
         }
         setCpf(value);
     };
-    const [interesses, setInteresses] = useState('');
+    // Estado de interesses sempre string[]
+    const [interesses, setInteresses] = useState<string[]>([]);
+    const [listaInteresses, setListaInteresses] = useState<{ id_interesse: number; descricao: string }[]>([]);
+    // Buscar lista de interesses do backend ao carregar a página
+    useEffect(() => {
+        const fetchInteresses = async () => {
+
+                const res = await fetch(`${API_URL}/interesses`);
+                if (res.ok) {
+                    let data = await res.json();
+                    setListaInteresses(data);
+                }
+
+        };
+        fetchInteresses();
+    }, []);
 
     const [contatoEmergencia, setContatoEmergencia] = useState('');
 
@@ -77,7 +92,7 @@ const Register = () => {
         }
         setContatoEmergencia(value);
     };
-    const [tipoUsuario, setTipoUsuario] = useState('idoso');
+    const [tipoUsuario, setTipoUsuario] = useState('1');
     const [error, setError] = useState('');
     const router = useRouter();
 
@@ -93,6 +108,9 @@ const Register = () => {
         }
 
         try {
+            const interessesIds = Array.isArray(interesses)
+                ? interesses.map(id => Number(id)).filter(id => !isNaN(id) && id > 0)
+                : [];
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
@@ -108,13 +126,17 @@ const Register = () => {
                     telefone,
                     dataNascimento,
                     cpf,
-                    interesses,
+                    interesses: interessesIds,
                     contatoEmergencia,
                     tipoUsuario
                 }),
             });
 
             if (!response.ok) {
+                if (response.status === 500) {
+                    setError('Este e-mail já está cadastrado.');
+                    return;
+                }
                 throw new Error('Registration failed');
             }
 
@@ -268,16 +290,28 @@ const Register = () => {
                     )}
                 </div>
                 <div>
-                    <label htmlFor="interesses">Interesses:</label>
-                    <input
-                        type="text"
-                        id="interesses"
-                        value={interesses}
-                        onChange={(e) => setInteresses(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
+                    <div className="mb-3">
+                        <label htmlFor="interesses" className="form-label">Interesses:</label>
+                        <select
+                            id="interesses"
+                            multiple
+                            className="form-select"
+                            value={interesses}
+                            onChange={e => {
+                                const values = Array.from(e.target.selectedOptions).map(opt => opt.value);
+                                setInteresses(values);
+                            }}
+                            required
+                            style={{ minHeight: 120 }}
+                        >
+                            {listaInteresses.length === 0 && (
+                                <option disabled>Nenhum interesse disponível</option>
+                            )}
+                            {listaInteresses.map((interesse) => (
+                                <option key={String(interesse.id_interesse ?? interesse.id_interesse)} value={String(interesse.id_interesse ?? interesse.id_interesse)}>{interesse.descricao}</option>
+                            ))}
+                        </select>
+                    </div>
                     <label htmlFor="contatoEmergencia">Contato de Emergência:</label>
                     <input
                         type="text"
@@ -303,8 +337,8 @@ const Register = () => {
                         onChange={(e) => setTipoUsuario(e.target.value)}
                         required
                     >
-                        <option value="idoso">Idoso</option>
-                        <option value="voluntario">Voluntário</option>
+                        <option value="1">Idoso</option>
+                        <option value="2">Voluntário</option>
                     </select>
                 </div>
                 <button type="submit">Registrar</button>
