@@ -1,4 +1,5 @@
 // Test validation utilities that would be used across forms
+import { UserType } from '@/lib/types'
 
 describe('Form Validation Utilities', () => {
   describe('Email validation', () => {
@@ -34,6 +35,27 @@ describe('Form Validation Utilities', () => {
       invalidEmails.forEach(email => {
         expect(isValidEmail(email)).toBe(false)
       })
+    })
+  })
+
+  describe('User type validation', () => {
+    const isValidUserType = (userType: any): userType is UserType => {
+      return Object.values(UserType).includes(userType)
+    }
+
+    it('validates correct user types', () => {
+      expect(isValidUserType(UserType.ELDER)).toBe(true)
+      expect(isValidUserType(UserType.VOLUNTEER)).toBe(true)
+      expect(isValidUserType('elder')).toBe(true)
+      expect(isValidUserType('volunteer')).toBe(true)
+    })
+
+    it('rejects invalid user types', () => {
+      expect(isValidUserType('')).toBe(false)
+      expect(isValidUserType('admin')).toBe(false)
+      expect(isValidUserType('invalid')).toBe(false)
+      expect(isValidUserType(null)).toBe(false)
+      expect(isValidUserType(undefined)).toBe(false)
     })
   })
 
@@ -137,6 +159,7 @@ describe('Form Validation Utilities', () => {
     interface RegisterForm extends LoginForm {
       name: string
       confirmPassword: string
+      userType: UserType | ''
     }
 
     const validateLoginForm = (form: LoginForm): { isValid: boolean; errors: Record<string, string> } => {
@@ -180,6 +203,10 @@ describe('Form Validation Utilities', () => {
       if (form.password !== form.confirmPassword) {
         errors.confirmPassword = 'Passwords do not match'
       }
+
+      if (!form.userType || !Object.values(UserType).includes(form.userType as UserType)) {
+        errors.userType = 'Please select a user type'
+      }
       
       return {
         isValid: Object.keys(errors).length === 0,
@@ -215,7 +242,8 @@ describe('Form Validation Utilities', () => {
         name: 'John Doe',
         email: 'john@example.com',
         password: 'password123',
-        confirmPassword: 'password123'
+        confirmPassword: 'password123',
+        userType: UserType.ELDER
       }
       
       const result = validateRegisterForm(validForm)
@@ -228,7 +256,8 @@ describe('Form Validation Utilities', () => {
         name: '',
         email: 'invalid-email',
         password: 'short',
-        confirmPassword: 'different'
+        confirmPassword: 'different',
+        userType: ''
       }
       
       const result = validateRegisterForm(invalidForm)
@@ -237,6 +266,28 @@ describe('Form Validation Utilities', () => {
       expect(result.errors.email).toBe('Please enter a valid email address')
       expect(result.errors.password).toBe('Password must be at least 8 characters long')
       expect(result.errors.confirmPassword).toBe('Passwords do not match')
+      expect(result.errors.userType).toBe('Please select a user type')
+    })
+
+    it('validates both elder and volunteer user types in register form', () => {
+      const elderForm: RegisterForm = {
+        name: 'Elder User',
+        email: 'elder@example.com',
+        password: 'password123',
+        confirmPassword: 'password123',
+        userType: UserType.ELDER
+      }
+
+      const volunteerForm: RegisterForm = {
+        name: 'Volunteer User',
+        email: 'volunteer@example.com',
+        password: 'password123',
+        confirmPassword: 'password123',
+        userType: UserType.VOLUNTEER
+      }
+      
+      expect(validateRegisterForm(elderForm).isValid).toBe(true)
+      expect(validateRegisterForm(volunteerForm).isValid).toBe(true)
     })
   })
 })

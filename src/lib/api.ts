@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { CreateUserData, UpdateUserData, UserType } from './types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
 
@@ -46,8 +47,8 @@ export const authApi = {
     return response.data;
   },
 
-  register: async (email: string, password: string, name: string) => {
-    const response = await api.post('/auth/register', { email, password, name });
+  register: async (email: string, password: string, name: string, userType: UserType) => {
+    const response = await api.post('/auth/register', { email, password, name, userType });
     return response.data;
   },
 
@@ -69,12 +70,12 @@ export const usersApi = {
     return response.data;
   },
 
-  createUser: async (userData: { name: string; email: string; password: string }) => {
+  createUser: async (userData: CreateUserData) => {
     const response = await api.post('/users', userData);
     return response.data;
   },
 
-  updateUser: async (id: string, userData: Partial<{ name: string; email: string }>) => {
+  updateUser: async (id: string, userData: UpdateUserData) => {
     const response = await api.patch(`/users/${id}`, userData);
     return response.data;
   },

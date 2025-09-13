@@ -1,17 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { usersApi } from '@/lib/api';
-import { ArrowLeft, User, Mail, Save } from 'lucide-react';
+import { ArrowLeft, User as UserIcon, Mail, Save, Users } from 'lucide-react';
 import Link from 'next/link';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { UserType } from '@/lib/types';
 
 export default function EditUserPage() {
   const params = useParams();
@@ -19,6 +14,7 @@ export default function EditUserPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    userType: '' as UserType | '',
   });
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -26,13 +22,7 @@ export default function EditUserPage() {
 
   const userId = params.id as string;
 
-  useEffect(() => {
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       setLoading(true);
       const response = await usersApi.getUserById(userId);
@@ -40,6 +30,7 @@ export default function EditUserPage() {
       setFormData({
         name: user.name || '',
         email: user.email || '',
+        userType: user.userType || '',
       });
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -47,9 +38,15 @@ export default function EditUserPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId, fetchUser]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -58,9 +55,9 @@ export default function EditUserPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, email } = formData;
+    const { name, email, userType } = formData;
 
-    if (!name || !email) {
+    if (!name || !email || !userType) {
       setError('Please fill in all fields');
       return;
     }
@@ -69,7 +66,7 @@ export default function EditUserPage() {
     setError('');
 
     try {
-      await usersApi.updateUser(userId, { name, email });
+      await usersApi.updateUser(userId, { name, email, userType: userType as UserType });
       router.push(`/users/${userId}`);
     } catch (error: unknown) {
       console.error('Update user error:', error);
@@ -140,7 +137,7 @@ export default function EditUserPage() {
                   value={formData.name}
                   onChange={handleInputChange}
                 />
-                <User className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+                <UserIcon className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
               </div>
             </div>
 
@@ -163,7 +160,28 @@ export default function EditUserPage() {
               </div>
             </div>
 
-            {error && submitLoading && (
+            <div>
+              <label htmlFor="userType" className="block text-sm font-medium text-gray-700">
+                User Type
+              </label>
+              <div className="mt-1 relative">
+                <select
+                  name="userType"
+                  id="userType"
+                  required
+                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+                  value={formData.userType}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select user type</option>
+                  <option value={UserType.ELDER}>Elder - Seeking assistance and support</option>
+                  <option value={UserType.VOLUNTEER}>Volunteer - Providing help and services</option>
+                </select>
+                <Users className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+
+            {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                 {error}
               </div>

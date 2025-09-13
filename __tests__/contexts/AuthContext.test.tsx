@@ -1,4 +1,6 @@
 // Test authentication context functionality
+import { UserType } from '@/lib/types'
+
 describe('AuthContext', () => {
   describe('authentication state management', () => {
     it('should manage user authentication state', () => {
@@ -6,6 +8,7 @@ describe('AuthContext', () => {
         id: string
         email: string
         name: string
+        userType: UserType
       }
 
       interface AuthState {
@@ -32,7 +35,7 @@ describe('AuthContext', () => {
       expect(authState.isAuthenticated).toBe(false)
 
       // After successful login
-      const user: User = { id: '1', email: 'test@example.com', name: 'Test User' }
+      const user: User = { id: '1', email: 'test@example.com', name: 'Test User', userType: UserType.ELDER }
       authState = { user, isAuthenticated: true, loading: false }
       expect(authState.user).toEqual(user)
       expect(authState.isAuthenticated).toBe(true)
@@ -57,14 +60,15 @@ describe('AuthContext', () => {
     })
 
     it('should validate register parameters', () => {
-      const isValidRegisterParams = (email: string, password: string, name: string): boolean => {
-        return email.length > 0 && password.length >= 8 && name.length >= 2 && email.includes('@')
+      const isValidRegisterParams = (email: string, password: string, name: string, userType: UserType): boolean => {
+        return email.length > 0 && password.length >= 8 && name.length >= 2 && email.includes('@') && Object.values(UserType).includes(userType)
       }
 
-      expect(isValidRegisterParams('test@example.com', 'password123', 'John Doe')).toBe(true)
-      expect(isValidRegisterParams('', 'password123', 'John Doe')).toBe(false)
-      expect(isValidRegisterParams('test@example.com', 'short', 'John Doe')).toBe(false)
-      expect(isValidRegisterParams('test@example.com', 'password123', 'A')).toBe(false)
+      expect(isValidRegisterParams('test@example.com', 'password123', 'John Doe', UserType.ELDER)).toBe(true)
+      expect(isValidRegisterParams('test@example.com', 'password123', 'Jane Smith', UserType.VOLUNTEER)).toBe(true)
+      expect(isValidRegisterParams('', 'password123', 'John Doe', UserType.ELDER)).toBe(false)
+      expect(isValidRegisterParams('test@example.com', 'short', 'John Doe', UserType.ELDER)).toBe(false)
+      expect(isValidRegisterParams('test@example.com', 'password123', 'A', UserType.ELDER)).toBe(false)
     })
   })
 

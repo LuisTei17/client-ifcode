@@ -1,19 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { usersApi } from '@/lib/api';
-import { ArrowLeft, Edit, Trash2, User, Mail, Calendar } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, User as UserIcon, Mail, Calendar, Users } from 'lucide-react';
 import Link from 'next/link';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { User, UserType } from '@/lib/types';
 
 export default function UserDetailsPage() {
   const params = useParams();
@@ -25,13 +18,23 @@ export default function UserDetailsPage() {
 
   const userId = params.id as string;
 
-  useEffect(() => {
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
+  const getUserTypeDisplay = (userType: UserType) => {
+    return userType === UserType.ELDER ? 'Elder' : 'Volunteer';
+  };
 
-  const fetchUser = async () => {
+  const getUserTypeBadge = (userType: UserType) => {
+    const isElder = userType === UserType.ELDER;
+    return (
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+        isElder ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+      }`}>
+        <Users className="h-4 w-4 mr-1" />
+        {getUserTypeDisplay(userType)}
+      </span>
+    );
+  };
+
+  const fetchUser = useCallback(async () => {
     try {
       setLoading(true);
       const response = await usersApi.getUserById(userId);
@@ -42,7 +45,13 @@ export default function UserDetailsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId, fetchUser]);
 
   const handleDeleteUser = async () => {
     if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
@@ -144,7 +153,7 @@ export default function UserDetailsPage() {
           <div className="px-6 py-8">
             <div className="flex items-center mb-6">
               <div className="bg-blue-100 rounded-full p-3">
-                <User className="h-8 w-8 text-blue-600" />
+                <UserIcon className="h-8 w-8 text-blue-600" />
               </div>
               <div className="ml-4">
                 <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
@@ -156,7 +165,7 @@ export default function UserDetailsPage() {
               <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                 <div>
                   <dt className="text-sm font-medium text-gray-500 flex items-center">
-                    <User className="h-4 w-4 mr-2" />
+                    <UserIcon className="h-4 w-4 mr-2" />
                     Full Name
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">{user.name}</dd>
@@ -167,6 +176,15 @@ export default function UserDetailsPage() {
                     Email Address
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">{user.email}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 flex items-center">
+                    <Users className="h-4 w-4 mr-2" />
+                    User Type
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {user.userType ? getUserTypeBadge(user.userType) : 'N/A'}
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-gray-500 flex items-center">

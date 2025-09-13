@@ -3,18 +3,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import Cookies from 'js-cookie';
 import { authApi } from '@/lib/api';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { User, UserType } from '@/lib/types';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (email: string, password: string, name: string, userType: UserType) => Promise<void>;
   googleLogin: (token: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
@@ -63,9 +58,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, userType: UserType) => {
     try {
-      const response = await authApi.register(email, password, name);
+      const response = await authApi.register(email, password, name, userType);
       const { access_token, user: userData } = response;
       
       Cookies.set('access_token', access_token);

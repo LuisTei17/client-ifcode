@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, User, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, UserPlus, Users } from 'lucide-react';
+import { UserType } from '@/lib/types';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export default function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    userType: '' as UserType | '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -27,7 +29,7 @@ export default function RegisterPage() {
     return null;
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -36,9 +38,9 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword, userType } = formData;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !userType) {
       setError('Please fill in all fields');
       return;
     }
@@ -57,7 +59,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      await register(email, password, name);
+      await register(email, password, name, userType as UserType);
       router.push('/dashboard');
     } catch (error: unknown) {
       console.error('Registration error:', error);
@@ -125,6 +127,26 @@ export default function RegisterPage() {
                   onChange={handleInputChange}
                 />
                 <Mail className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="userType" className="block text-sm font-medium text-gray-700">
+                User Type
+              </label>
+              <div className="mt-1 relative">
+                <select
+                  id="userType"
+                  name="userType"
+                  required
+                  className="appearance-none relative block w-full px-3 py-2 pl-10 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
+                  value={formData.userType}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select your role</option>
+                  <option value={UserType.ELDER}>Elder - Seeking assistance and support</option>
+                  <option value={UserType.VOLUNTEER}>Volunteer - Providing help and services</option>
+                </select>
+                <Users className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
               </div>
             </div>
             <div>

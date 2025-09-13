@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { usersApi } from '@/lib/api';
-import { ArrowLeft, User, Mail, Lock, Save } from 'lucide-react';
+import { ArrowLeft, User, Mail, Lock, Save, Users } from 'lucide-react';
 import Link from 'next/link';
+import { UserType } from '@/lib/types';
 
 export default function CreateUserPage() {
   const router = useRouter();
@@ -13,11 +14,12 @@ export default function CreateUserPage() {
     name: '',
     email: '',
     password: '',
+    userType: '' as UserType | '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -26,9 +28,9 @@ export default function CreateUserPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, email, password } = formData;
+    const { name, email, password, userType } = formData;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !userType) {
       setError('Please fill in all fields');
       return;
     }
@@ -42,7 +44,7 @@ export default function CreateUserPage() {
     setError('');
 
     try {
-      await usersApi.createUser({ name, email, password });
+      await usersApi.createUser({ name, email, password, userType: userType as UserType });
       router.push('/users');
     } catch (error: unknown) {
       console.error('Create user error:', error);
@@ -133,6 +135,27 @@ export default function CreateUserPage() {
               <p className="mt-1 text-xs text-gray-500">
                 Password must be at least 6 characters long
               </p>
+            </div>
+
+            <div>
+              <label htmlFor="userType" className="block text-sm font-medium text-gray-700">
+                User Type
+              </label>
+              <div className="mt-1 relative">
+                <select
+                  name="userType"
+                  id="userType"
+                  required
+                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+                  value={formData.userType}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select user type</option>
+                  <option value={UserType.ELDER}>Elder - Seeking assistance and support</option>
+                  <option value={UserType.VOLUNTEER}>Volunteer - Providing help and services</option>
+                </select>
+                <Users className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+              </div>
             </div>
 
             {error && (

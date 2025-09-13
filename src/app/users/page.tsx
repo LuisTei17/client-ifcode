@@ -5,13 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { usersApi } from '@/lib/api';
 import { Edit, Trash2, Plus, Eye, Search } from 'lucide-react';
 import Link from 'next/link';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt?: string;
-}
+import { User, UserType } from '@/lib/types';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -19,6 +13,21 @@ export default function UsersPage() {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+
+  const getUserTypeDisplay = (userType: UserType) => {
+    return userType === UserType.ELDER ? 'Elder' : 'Volunteer';
+  };
+
+  const getUserTypeBadge = (userType: UserType) => {
+    const isElder = userType === UserType.ELDER;
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+        isElder ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+      }`}>
+        {getUserTypeDisplay(userType)}
+      </span>
+    );
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -142,6 +151,12 @@ export default function UsersPage() {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
+                        Type
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
                         Created
                       </th>
                       <th scope="col" className="relative px-6 py-3">
@@ -152,7 +167,7 @@ export default function UsersPage() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
+                        <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                           {searchTerm ? 'No users found matching your search.' : 'No users found.'}
                         </td>
                       </tr>
@@ -164,6 +179,9 @@ export default function UsersPage() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {user.email}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {user.userType ? getUserTypeBadge(user.userType) : 'N/A'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
