@@ -24,14 +24,14 @@ const Login = () => {
         if (res.ok) {
             const data = await res.json();
             // Store JWT token in local storage or cookies
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.access_token);
             router.push('/'); // Redirect to index
         } else {
             const errorData = await res.json();
             setError(errorData.message || 'Login failed');
         }
     };
-
+rm -rf ./b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW/.git
     return (
         <div className="container">
             <h1>Login</h1>
