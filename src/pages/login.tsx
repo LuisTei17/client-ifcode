@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -7,12 +8,11 @@ const Login = () => {
     const [error, setError] = useState('');
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
-        // Replace with your login API endpoint
-        const res = await fetch('/api/login', {
+        const res = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ const Login = () => {
             const data = await res.json();
             // Store JWT token in local storage or cookies
             localStorage.setItem('token', data.token);
-            router.push('/dashboard');
+            router.push('/'); // Redirect to index
         } else {
             const errorData = await res.json();
             setError(errorData.message || 'Login failed');
@@ -32,7 +32,7 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
+        <div className="container">
             <h1>Login</h1>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
@@ -57,6 +57,13 @@ const Login = () => {
                     />
                 </div>
                 <button type="submit">Login</button>
+                <button
+                    type="button"
+                    style={{ marginLeft: '10px' }}
+                    onClick={() => router.push('/register')}
+                >
+                    Fazer cadastro
+                </button>
             </form>
             <p>Or login with:</p>
             {/* Include your SocialLogin component here */}
