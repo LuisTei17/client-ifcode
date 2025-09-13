@@ -4,19 +4,19 @@ import Image from 'next/image';
 
 
 const Navbar = () => {
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         setIsAuthenticated(true);
-    //     }
-    // }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
 
-    // const handleLogout = () => {
-    //     localStorage.removeItem('token');
-    //     setIsAuthenticated(false);
-    // };
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+    };
 
     return (
         <header className="header">
@@ -47,9 +47,11 @@ const Navbar = () => {
                         <span>Login
                         <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} /></span>
                     </Link>
-                    <Link href="/perfil" className="nav-item">
-                        <span>Perfil
-                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} /></span>
+
+                    <Link href="/profile" className="nav-item">
+                        <span>Perfil</span>
+                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} />
+
                     </Link>
                 </nav>
             </div>
