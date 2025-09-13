@@ -8,6 +8,18 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [nome, setNome] = useState('');
     const [cep, setCep] = useState('');
+
+    // Função para aplicar máscara ao CEP (formato 99.999-999)
+    const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+        if (value.length > 8) value = value.slice(0, 8);
+        if (value.length > 5) {
+            value = value.replace(/(\d{2})(\d{3})(\d{0,3})/, '$1.$2-$3');
+        } else if (value.length > 2) {
+            value = value.replace(/(\d{2})(\d{0,3})/, '$1.$2');
+        }
+        setCep(value);
+    };
     const [complemento, setComplemento] = useState('');
     const [numero, setNumero] = useState('');
     const [telefone, setTelefone] = useState('');
@@ -124,9 +136,17 @@ const Register = () => {
                         type="text"
                         id="cep"
                         value={cep}
-                        onChange={(e) => setCep(e.target.value)}
+                        onChange={handleCepChange}
                         required
+                        className={cep && cep.length !== 10 ? 'error' : ''}
+                        inputMode="numeric"
+                        maxLength={10}
                     />
+                    {cep && cep.length !== 10 && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            CEP inválido.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="complemento">Complemento:</label>
