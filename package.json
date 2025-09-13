@@ -1,0 +1,31 @@
+{
+  "name": "nextjs-pwa-app",
+  "version": "1.0.0",
+  "description": "A Next.js application with PWA support, featuring authentication and a protected dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [
+    "nextjs",
+    "pwa",
+    "authentication",
+    "jwt"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "jsonwebtoken": "^8.5.1",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0",
+    "@types/react": "^17.0.0",
+    "@types/node": "^14.0.0"
+  }
+}
