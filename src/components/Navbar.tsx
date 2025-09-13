@@ -41,7 +41,7 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="text">
-                        <h1>ConnectCare</h1>
+                        <h1>Ponte</h1>
                         <p>Conectando Corações E Enriquecendo Vidas</p>
                     </div>
                 </div>
