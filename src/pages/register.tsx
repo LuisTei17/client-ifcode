@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PasswordStrength from '../components/PasswordStrength';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/router';
 
@@ -115,6 +116,7 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+                    <PasswordStrength password={password} />
                 </div>
                 <div>
                     <label htmlFor="cep">CEP:</label>
