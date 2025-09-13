@@ -41,9 +41,39 @@ const Register = () => {
         setTelefone(value);
     };
     const [dataNascimento, setDataNascimento] = useState('');
+
     const [cpf, setCpf] = useState('');
+
+    // Função para aplicar máscara ao CPF (formato 999.999.999-99)
+    const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 9) {
+            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+        } else if (value.length > 6) {
+            value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+        } else if (value.length > 3) {
+            value = value.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+        }
+        setCpf(value);
+    };
     const [interesses, setInteresses] = useState('');
+
     const [contatoEmergencia, setContatoEmergencia] = useState('');
+
+    // Função para aplicar máscara ao contato de emergência (igual telefone)
+    const handleContatoEmergenciaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 10) {
+            value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else if (value.length > 6) {
+            value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else if (value.length > 2) {
+            value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+        }
+        setContatoEmergencia(value);
+    };
     const [tipoUsuario, setTipoUsuario] = useState('idoso');
     const [error, setError] = useState('');
     const router = useRouter();
@@ -218,9 +248,17 @@ const Register = () => {
                         type="text"
                         id="cpf"
                         value={cpf}
-                        onChange={(e) => setCpf(e.target.value)}
+                        onChange={handleCpfChange}
                         required
+                        className={cpf && !/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf) ? 'error' : ''}
+                        inputMode="numeric"
+                        maxLength={14}
                     />
+                    {cpf && !/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf) && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            CPF inválido.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="interesses">Interesses:</label>
@@ -238,9 +276,17 @@ const Register = () => {
                         type="text"
                         id="contatoEmergencia"
                         value={contatoEmergencia}
-                        onChange={(e) => setContatoEmergencia(e.target.value)}
+                        onChange={handleContatoEmergenciaChange}
                         required
+                        className={contatoEmergencia && !/^\(\d{2}\) \d{4,5}-\d{4}$/.test(contatoEmergencia) ? 'error' : ''}
+                        inputMode="numeric"
+                        maxLength={15}
                     />
+                    {contatoEmergencia && !/^\(\d{2}\) \d{4,5}-\d{4}$/.test(contatoEmergencia) && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            Telefone inválido.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="tipoUsuario">Tipo de Usuário:</label>
