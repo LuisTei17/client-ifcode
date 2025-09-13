@@ -47,7 +47,7 @@ const Navbar = () => {
                         <span>Login</span>
                         <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} />
                     </Link>
-                    <Link href="/perfil" className="nav-item">
+                    <Link href="/profile" className="nav-item">
                         <span>Perfil</span>
                         <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} />
                     </Link>

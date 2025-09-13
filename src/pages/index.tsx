@@ -24,7 +24,7 @@ const Home = () => {
                 <div className="search">
                     <input type="text" placeholder="Procure por atividades e voluntários" />
                     <button>
-                        <Image src="/icons/search.png" alt="Search" width={20} height={20} />
+                       <Image src="/icons/search.png" alt="Search" width={20} height={20} />
                     </button>
                 </div>
 

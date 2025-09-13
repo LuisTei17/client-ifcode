@@ -13,13 +13,13 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        const res = await fetch(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        console.log('API_URL:', API_URL);
+    const res = await fetch('http://localhost:4000/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  credentials: 'include',
+  body: JSON.stringify({ email, password })
+});
 
         if (res.ok) {
             const data = await res.json();
