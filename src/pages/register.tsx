@@ -22,7 +22,24 @@ const Register = () => {
     };
     const [complemento, setComplemento] = useState('');
     const [numero, setNumero] = useState('');
+
     const [telefone, setTelefone] = useState('');
+
+    // Função para aplicar máscara ao telefone (fixo: (99) 9999-9999, celular: (99) 99999-9999)
+    const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 10) {
+            // Celular: (99) 99999-9999
+            value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else if (value.length > 6) {
+            // Fixo: (99) 9999-9999
+            value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else if (value.length > 2) {
+            value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+        }
+        setTelefone(value);
+    };
     const [dataNascimento, setDataNascimento] = useState('');
     const [cpf, setCpf] = useState('');
     const [interesses, setInteresses] = useState('');
@@ -173,9 +190,17 @@ const Register = () => {
                         type="tel"
                         id="telefone"
                         value={telefone}
-                        onChange={(e) => setTelefone(e.target.value)}
+                        onChange={handleTelefoneChange}
                         required
+                        className={telefone && !/^\(\d{2}\) \d{4,5}-\d{4}$/.test(telefone) ? 'error' : ''}
+                        inputMode="numeric"
+                        maxLength={15}
                     />
+                    {telefone && !/^\(\d{2}\) \d{4,5}-\d{4}$/.test(telefone) && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            Telefone inválido.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="dataNascimento">Data de Nascimento:</label>
