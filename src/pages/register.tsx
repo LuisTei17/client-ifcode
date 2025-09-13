@@ -67,7 +67,7 @@ const Register = () => {
     useEffect(() => {
         const fetchInteresses = async () => {
 
-                const res = await fetch('/interesses', { credentials: 'include' });
+                const res = await fetch(API_URL + '/interesses', { credentials: 'include' });
                 if (res.ok) {
                     let data = await res.json();
                     setListaInteresses(data);
@@ -112,7 +112,7 @@ const Register = () => {
                 ? interesses.map(id => Number(id)).filter(id => !isNaN(id) && id > 0)
                 : [];
             console.log('API_URL:', API_URL);
-            const response = await fetch('/auth/register', {
+            const response = await fetch(API_URL + '/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

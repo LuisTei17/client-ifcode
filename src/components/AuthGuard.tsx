@@ -1,18 +1,23 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '../utils/auth'; // Assuming you have an auth context or hook
 
-const AuthGuard = ({ children }) => {
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
-    const { isAuthenticated } = useAuth(); // Replace with your authentication logic
+    const [isClient, setIsClient] = useState(false);
+    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        setIsClient(true);
+        const t = localStorage.getItem('token');
+        setToken(t);
+        if (!t) {
             router.push('/login');
         }
-    }, [isAuthenticated, router]);
+    }, [router]);
 
-    return isAuthenticated ? children : null;
+    if (!isClient) return null;
+    return token ? <>{children}</> : null;
 };
 
 export default AuthGuard;
