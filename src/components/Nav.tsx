@@ -25,7 +25,7 @@ const Navbar = () => {
                 {/* Esquerda: Logo + Texto */}
                 <div className="brand">
                     <div className="logo">
-                        <Link href="/">
+                        <Link href="/index">
                             <Image
                                 className="img-logo"
                                 src="/icons/Logo.svg"
@@ -42,16 +42,16 @@ const Navbar = () => {
                 </div>
 
                 {/* Direita: Links */}
-                <nav className="nav-links">
+                {/* <nav className="nav-links">
                     <Link href="/login" className="nav-item">
-                        <span>Login
-                        <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} /></span>
+                        <a>Login
+                        <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} /></a>
                     </Link>
                     <Link href="/perfil" className="nav-item">
-                        <span>Perfil
-                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} /></span>
+                        <a>Perfil
+                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} /></a>
                     </Link>
-                </nav>
+                </nav> */}
             </div>
         </header>
     );

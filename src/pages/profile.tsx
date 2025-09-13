@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PasswordStrength from '../components/PasswordStrength';
-import Navbar from '../components/Navbar';
+import Nav from '../components/Nav';
 import pagination from '../components/Pagination';
 import Image from 'next/image';
 import Pagination from '../components/Pagination';
@@ -11,14 +11,14 @@ const Profile = () =>{
     return(
     <div className="profile-page">
         
-      <Navbar />
+      <Nav />
 
       <main className="profile-container">
         
         <div className="edit-button">
                 <h1>Meu Perfil</h1>
               <button type='submit'>Editar Perfil</button>
-            </div>
+        </div>
 
         <div className="profile-content">
           {/* Card do usuário */}
@@ -32,7 +32,7 @@ const Profile = () =>{
               />
             </div>
             <h2>Usuário</h2>
-            <p>mauricioscheffersilveira13@gmail.com</p>
+            <p className='user-email'>mauricioscheffersilveira13@gmail.com</p>
             
             <button className="sign-out">Sign Out</button>
           </div>

@@ -13,7 +13,7 @@ const Index = () => {
         <><Navbar></Navbar>
         <div className="container">
             <Head>
-                <title>Care!</title>
+                <title>Ponte!</title>
                 <meta name="description" content="Encontre Um Novo Amigo." />
             </Head>
 

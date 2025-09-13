@@ -1,36 +1,33 @@
 .card {
   background: #fff;
   border-radius: 16px;
-  padding: 20px;
-  width: 280px;
+  width: 680px; /* largura fixa do card */
+  height: 500px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  display: flex;
+  display: flex; /* flex vertical para alinhar conteúdo */
   flex-direction: column;
   gap: 12px;
+  overflow: hidden; /* evita que conteúdo ultrapasse borda */
+  padding: 12px; /* espaço interno */
 }
 
-.card-header {
+.contCard {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .avatar {
-  background: #fff3e0;
-  padding: 10px;
+  width: 100%; /* ocupa largura do card */
+  height: 150px; /* altura da imagem */
   border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden; /* corta a imagem nos cantos arredondados */
 }
 
-.featured {
-  background: orange;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 12px;
+.avatar .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* mantém proporção e preenche área */
 }
 
 .card-tag {

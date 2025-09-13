@@ -1,0 +1,59 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centraliza horizontalmente */
+  justify-content: center;  /* centraliza verticalmente */
+  width: 60%;
+  background-color: #fff;
+  border-bottom: 2px solid #f2c94c; /* linha amarela */
+  padding: 20px;             /* aumenta padding para ficar mais “clean” */
+  box-shadow: 0 2px 4px rgba(230,184,0,1);
+  margin: 0 auto;    
+  border-radius: 18px;       /* centraliza o header na tela */
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centraliza conteúdo interno */
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+                  /* espaço entre logo e texto */
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;   /* logo em cima, texto embaixo */
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo img {
+  max-width: 150px;
+  height: auto;
+}
+
+.text h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.text p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+
+
+.nav-item span{
+  font-size: 20px;
+  position: relative;
+  transition: color 0.3s ease;
+  display: flex;
+  text-decoration: none;
+}
