@@ -11,6 +11,8 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [nome, setNome] = useState('');
     const [cep, setCep] = useState('');
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     // Função para aplicar máscara ao CEP (formato 99.999-999)
     const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,27 +114,57 @@ const Register = () => {
                 ? interesses.map(id => Number(id)).filter(id => !isNaN(id) && id > 0)
                 : [];
             console.log('API_URL:', API_URL);
-            const response = await fetch(API_URL + '/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    email,
-                    password,
-                    nome,
-                    cep,
-                    complemento,
-                    numero,
-                    telefone,
-                    dataNascimento,
-                    cpf,
-                    interesses: interessesIds,
-                    contatoEmergencia,
-                    tipoUsuario
-                }),
-            });
+            // If user selected a file, send all data + file as multipart/form-data to /auth/register
+            let response: Response;
+            if (selectedFile) {
+                try {
+                    const fd = new FormData();
+                    // append basic fields
+                    fd.append('email', email);
+                    fd.append('password', password);
+                    fd.append('nome', nome);
+                    if (cep) fd.append('cep', cep);
+                    if (complemento) fd.append('complemento', complemento);
+                    if (numero) fd.append('numero', numero);
+                    if (telefone) fd.append('telefone', telefone);
+                    if (dataNascimento) fd.append('dataNascimento', dataNascimento);
+                    if (cpf) fd.append('cpf', cpf);
+                    if (contatoEmergencia) fd.append('contatoEmergencia', contatoEmergencia);
+                    if (tipoUsuario) fd.append('tipoUsuario', tipoUsuario);
+                    // interesses as JSON string
+                    fd.append('interesses', JSON.stringify(interessesIds));
+                    // append file under field 'file'
+                    fd.append('file', selectedFile);
+
+                    const upOpts: any = { method: 'POST', body: fd, credentials: 'include' };
+                    response = await fetch(`${API_URL ? API_URL : ''}/auth/register`, upOpts);
+                } catch (err) {
+                    console.warn('Upload/register failed', err);
+                    throw err;
+                }
+            } else {
+                response = await fetch(API_URL + '/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        nome,
+                        cep,
+                        complemento,
+                        numero,
+                        telefone,
+                        dataNascimento,
+                        cpf,
+                        interesses: interessesIds,
+                        contatoEmergencia,
+                        tipoUsuario,
+                    }),
+                });
+            }
 
             if (!response.ok) {
                 if (response.status === 500) {
@@ -314,6 +346,14 @@ const Register = () => {
                             ))}
                         </select>
                     </div>
+                    <label htmlFor="foto">Foto de perfil:</label>
+                    <input type="file" id="foto" accept="image/*" onChange={e => {
+                        const f = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+                        setSelectedFile(f);
+                        if (f) setPreviewUrl(URL.createObjectURL(f)); else setPreviewUrl(null);
+                    }} />
+                    {previewUrl && <div style={{ marginTop: 8 }}><img src={previewUrl} alt="preview" style={{ maxWidth: 160, maxHeight: 160, borderRadius: 8 }} /></div>}
+
                     <label htmlFor="contatoEmergencia">Contato de Emergência:</label>
                     <input
                         type="text"

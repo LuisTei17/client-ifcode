@@ -101,27 +101,36 @@ const Dashboard = () => {
   return (
   <AuthGuard>
       <div>
-              <p><strong>Interesses:</strong> {nextUser && nextUser.usuarioInteresses?.map(ui => ui.interest.descricao).join(', ')}</p>
-        <p>Welcome to your dashboard!</p>
         <div className="dashboard-next-user">
-          <h2>Próximo usuário do ranking</h2>
+          <h2 style={{ maxWidth: 900, marginTop: 100, marginBottom: 30, marginLeft:30 }}>Próximo Voluntario</h2>
           {loading && <p>Carregando...</p>}
           {!loading && nextUser ? (
-            <div>
-              <p><strong>Nome:</strong> {nextUser.nome_usuario}</p>
-              <p><strong>Idade:</strong> {nextUser.dt_nasc ? (() => {
-                const [year, month, day] = nextUser.dt_nasc.split('-').map(Number);
-                const birthDate = new Date(year, month - 1, day);
-                const today = new Date();
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                  age--;
-                }
-                return age;
-              })() : 'N/A'}</p>
-              <p><strong>Interesses:</strong> {nextUser.usuarioInteresses?.map(ui => ui.interest.descricao)?.join(', ')}</p>
-             
+            <div className="card mb-3" style={{ maxWidth: 900, marginTop: 30, marginBottom: 30, marginLeft: 30, marginRight: 30 }}>
+              <div className="row g-0">
+                <div className="col-md-8">
+                  <div className="card-body">
+                    <h5 className="card-title">{nextUser.nome_usuario}</h5>
+                    <p className="card-text"><small className="text-muted">Id: {nextUser.id}</small></p>
+                    <p className="card-text"><strong>Idade:</strong> {nextUser.dt_nasc ? (() => {
+                      const [year, month, day] = nextUser.dt_nasc.split('-').map(Number);
+                      const birthDate = new Date(year, month - 1, day);
+                      const today = new Date();
+                      let age = today.getFullYear() - birthDate.getFullYear();
+                      const m = today.getMonth() - birthDate.getMonth();
+                      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                      }
+                      return age;
+                    })() : 'N/A'}</p>
+                    <p className="card-text"><strong>Interesses:</strong> {nextUser.usuarioInteresses?.map(ui => (ui as any).interest?.descricao)?.join(', ')}</p>
+                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.</p>
+                    <div className="d-flex gap-2 mt-2">
+                      <button className="btn btn-primary" onClick={handleAgendar}>Agendar visita</button>
+                      <button className="btn btn-outline-secondary" onClick={() => router.push(`/profile?id=${nextUser.id}`)}>Ver perfil</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : !loading && <p>Nenhum usuário encontrado.</p>}
         </div>
