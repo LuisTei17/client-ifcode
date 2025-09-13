@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import PasswordStrength from '../components/PasswordStrength';
 import Navbar from '../components/Navbar';
+import pagination from '../components/Pagination';
 import Image from 'next/image';
+import Pagination from '../components/Pagination';
 
 
 
@@ -76,6 +78,8 @@ const Profile = () =>{
           </div>
         </div>
       </main>
+
+      <Pagination></Pagination>
     </div>
     );
 };

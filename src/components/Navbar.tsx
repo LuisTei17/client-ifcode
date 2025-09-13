@@ -44,12 +44,12 @@ const Navbar = () => {
                 {/* Direita: Links */}
                 <nav className="nav-links">
                     <Link href="/login" className="nav-item">
-                        <span>Login</span>
-                        <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} />
+                        <span>Login
+                        <Image className="icon" src="/icons/login.png" alt="Login" width={25} height={25} /></span>
                     </Link>
                     <Link href="/perfil" className="nav-item">
-                        <span>Perfil</span>
-                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} />
+                        <span>Perfil
+                        <Image className="icon" src="/icons/singup.png" alt="Perfil" width={25} height={25} /></span>
                     </Link>
                 </nav>
             </div>
