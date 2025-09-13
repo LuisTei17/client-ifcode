@@ -22,6 +22,13 @@ const Register = () => {
         e.preventDefault();
         setError('');
 
+        // Validação do nome: apenas letras e espaços
+        const nomeValido = /^[A-Za-zÀ-ÿ\s]+$/.test(nome);
+        if (!nomeValido) {
+            setError('O nome deve conter apenas letras e espaços.');
+            return;
+        }
+
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
@@ -59,6 +66,9 @@ const Register = () => {
         }
     };
 
+    // Regex para validar nome
+    const nomeValido = /^[A-Za-zÀ-ÿ\s]+$/.test(nome);
+
     return (
         <div className="container">
             <h1>Register</h1>
@@ -72,7 +82,13 @@ const Register = () => {
                         value={nome}
                         onChange={(e) => setNome(e.target.value)}
                         required
+                        className={!nomeValido && nome ? 'error' : ''}
                     />
+                    {!nomeValido && nome && (
+                        <span style={{ color: '#e74c3c', fontSize: '0.9em' }}>
+                            O nome não pode conter números ou caracteres especiais.
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="email">Email:</label>
